@@ -62,7 +62,7 @@ body {
 }
 
 @media (max-width: 800px) {
-  a.ButtonLink {
+  Link.ButtonLink {
     position: fixed;
     left: 0;
     right: 0;
