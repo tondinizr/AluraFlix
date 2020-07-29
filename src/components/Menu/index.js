@@ -5,14 +5,21 @@ import Button from "../Button";
 import "./Menu.css";
 
 function Menu() {
+  console.log(window.location.pathname);
   return (
     <nav className="Menu">
       <Link to="/">
         <img src={Logo} alt="TONFLIX" className="Logo" />
       </Link>
-      <Button to="/cadastro/video" className="ButtonLink">
-        Novo Vídeo
-      </Button>
+      {window.location.pathname === "/" ? (
+        <Button to="/cadastro/video" className="ButtonLink">
+          Novo Vídeo
+        </Button>
+      ) : (
+        <Button to="/" className="ButtonLink">
+          Pagina inicial
+        </Button>
+      )}
     </nav>
   );
 }
