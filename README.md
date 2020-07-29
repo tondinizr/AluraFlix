@@ -23,7 +23,7 @@ npm start
 
 <br />
 
-## \*\*:hammer: DEPLOY
+## **:hammer: DEPLOY**
 
 [![Deploy with Vercel](https://vercel.com/button?color=000)](https://tonflix.vercel.app/)
 
