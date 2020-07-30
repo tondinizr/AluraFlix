@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PageDefault from "../../../components/PageDefault";
 import FormField from "../../../components/FormField";
@@ -10,17 +10,33 @@ function CadastroCategoria() {
     nome: "",
     descricao: "",
     cor: "#6969da",
+    id: "",
   };
   const [categoria, setCategoria] = useState(ValoresIniciais);
 
   function handleChange(e) {
-    const name = e.target.getAttribute("name");
+    let name = e.target.getAttribute("name");
     const { value } = e.target;
     setCategoria({
       ...categoria,
       [name]: value,
     });
   }
+
+  useEffect(() => {
+    if (window.location.href.includes("localhost")) {
+      const URL = "http://localhost:8080/categorias";
+      fetch(URL).then(async (respostaDoServer) => {
+        if (respostaDoServer.ok) {
+          const resposta = await respostaDoServer.json();
+          console.log(resposta);
+          setListaCategorias(resposta);
+          return;
+        }
+        throw new Error("Não foi possível pegar os dados");
+      });
+    }
+  }, []);
 
   return (
     <PageDefault>
@@ -93,7 +109,7 @@ function CadastroCategoria() {
 
           {listaCategorias.map((novaCategoria, indice) => {
             return (
-              <tr key={`Linha${indice}`}>
+              <tr key={novaCategoria.id}>
                 <td>{novaCategoria.nome}</td>
                 <td>{novaCategoria.descricao}</td>
                 <td>
