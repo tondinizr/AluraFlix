@@ -27,30 +27,13 @@ class FormField extends Component {
 
   render() {
     const { label, value, textArea, Color, ...rest } = this.props;
-    const { isFocused } = this.state;
+    const Tag = textArea ? "textarea" : "input";
 
     return (
       <FormFieldWrapper Color={Color}>
-        {label && (
-          <Label Color up={isFocused || value} onClick={this.handleLabelClick}>
-            {label}
-          </Label>
-        )}
-
-        {textArea ? (
-          <TextArea
-            Color={Color}
-            value={value}
-            onChange={this.props.onChange}
-            onFocus={this.handleFocus}
-            onBlur={this.handleBlur}
-            innerRef={(node) => {
-              this._input = node;
-            }}
-            {...rest}
-          />
-        ) : (
+        <Label Color={Color}>
           <Input
+            as={Tag}
             Color={Color}
             value={value}
             onChange={this.props.onChange}
@@ -61,7 +44,8 @@ class FormField extends Component {
             }}
             {...rest}
           />
-        )}
+          <Label.Text Color={Color}>{label} </Label.Text>
+        </Label>
       </FormFieldWrapper>
     );
   }
@@ -84,59 +68,68 @@ FormField.propTypes = {
 };
 
 const defaultColor = "#6969da";
-const padV = 16;
-const padH = 16;
-const labelSize = 14;
-const view = `${padV}px  ${padH}px`;
 
 const FormFieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  position: relative;
+  textarea {
+    min-height: 150px;
+  }
+  input[type="color"] {
+    padding-left: 56px;
+  }
   color: ${(props) => props.Color || defaultColor};
 `;
 
-const Label = styled.label`
+const Label = styled.label``;
+
+Label.Text = styled.span`
   color: ${(props) => props.Color || defaultColor};
-  font-size: ${labelSize}px;
-  will-change: transform;
-  transition: transform 0.3s cubic-bezier(0.06, 0.67, 0.32, 0.82);
-  transform: translate(${padH}px, ${1.333 * labelSize + padV}px);
-  ${(props) =>
-    props.up &&
-    css`
-      transform: scale(0.8) translate(-2px, -2px);
-    `}
+  height: 57px;
+  position: absolute;
+  top: 0;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  transform-origin: 0% 0%;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  transition: 0.1s ease-in-out;
 `;
 
 const Input = styled.input`
-  background-color: transparent;
+  background: transparent;
   color: ${(props) => props.Color || defaultColor};
-  padding: ${(props) => props.Padding || view};
-  outline: none;
-  border-radius: 3px;
-  font-size: 16px;
+  display: block;
   width: 100%;
+  height: 57px;
+  font-size: 18px;
+  outline: 0;
   border: 1px solid ${(props) => props.Color || defaultColor};
   &:focus {
     border: 1px solid ${(props) => darken(0.1, props.Color || defaultColor)};
   }
-  height: ${(props) => props.Height || "auto"};
-`;
+  padding: 16px 16px;
+  margin-bottom: 45px;
 
-const TextArea = styled.textarea`
-  background-color: transparent;
-  color: ${(props) => props.Color || defaultColor};
-  resize: vertical;
-  outline: none;
-  border-radius: 3px;
-  font-size: 16px;
-  width: 100%;
-  padding: ${padV}px ${padH}px;
-  border: 1px solid ${(props) => props.Color || defaultColor};
-  &:focus {
-    border: 1px solid ${(props) => darken(0.1, props.Color || defaultColor)};
+  resize: none;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+
+  &:focus:not([type="color"]) + ${Label.Text} {
+    transform: scale(0.6) translateY(-10px);
   }
+  ${({ value }) => {
+    const hasValue = value.length > 0;
+    return (
+      hasValue &&
+      css`
+        &:not([type="color"]) + ${Label.Text} {
+          transform: scale(0.6) translateY(-10px);
+        }
+      `
+    );
+  }}
 `;
 
 export default FormField;
