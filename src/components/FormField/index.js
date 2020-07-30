@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled, { css } from "styled-components";
 import { darken } from "polished";
+import PropTypes from "prop-types";
 
 class FormField extends Component {
   state = {
@@ -65,6 +66,22 @@ class FormField extends Component {
     );
   }
 }
+
+FormField.defaultProps = {
+  textArea: false,
+  Height: "100%",
+};
+
+FormField.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  textArea: PropTypes.bool,
+  Color: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  Height: PropTypes.string,
+};
 
 const defaultColor = "#6969da";
 const padV = 16;

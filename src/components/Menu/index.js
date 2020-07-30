@@ -5,7 +5,6 @@ import Button from "../Button";
 import "./Menu.css";
 
 function Menu() {
-  console.log(window.location.pathname);
   return (
     <nav className="Menu">
       <Link to="/">

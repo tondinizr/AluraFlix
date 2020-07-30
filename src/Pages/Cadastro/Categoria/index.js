@@ -44,7 +44,6 @@ function CadastroCategoria() {
           label="Descrição:"
           type="text"
           name="descricao"
-          text
           value={categoria.descricao}
           onChange={(e) => {
             handleChange(e);
