@@ -8,7 +8,7 @@ import { DefaultButton } from "../../../components/Button";
 function CadastroCategoria() {
   const [listaCategorias, setListaCategorias] = useState([]);
   const ValoresIniciais = {
-    nome: "",
+    titulo: "",
     descricao: "",
     cor: "#6969da",
     id: "",
@@ -45,11 +45,11 @@ function CadastroCategoria() {
       <form>
         <FormField
           Color={categoria.cor}
-          label="Nome da Categoria:"
+          label="Título da Categoria:"
           type="text"
-          name="nome"
+          name="titulo"
           text
-          value={categoria.nome}
+          value={categoria.titulo}
           onChange={(e) => {
             handleChange(e);
           }}
@@ -83,7 +83,7 @@ function CadastroCategoria() {
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            if (categoria.nome === "") {
+            if (categoria.titulo === "") {
               return;
             } else {
               if (listaCategorias[0] === "") {
@@ -103,14 +103,14 @@ function CadastroCategoria() {
         <table>
           <tbody>
             <tr>
-              <td>Nome da categoria</td>
+              <td>Título da categoria</td>
               <td>Descrição</td>
               <td>Cor</td>
             </tr>
             {listaCategorias.map((novaCategoria, indice) => {
               return (
                 <tr key={novaCategoria.id}>
-                  <td>{novaCategoria.nome}</td>
+                  <td>{novaCategoria.titulo}</td>
                   <td>{novaCategoria.descricao}</td>
                   <td>
                     <b
