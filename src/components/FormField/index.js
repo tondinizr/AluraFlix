@@ -26,8 +26,10 @@ class FormField extends Component {
   };
 
   render() {
+    const fieldId = `id_${this.props.name}`;
     const { label, value, textArea, Color, ...rest } = this.props;
     const Tag = textArea ? "textarea" : "input";
+    const hasSuggestions = this.props.suggestions;
 
     return (
       <FormFieldWrapper Color={Color}>
@@ -37,6 +39,8 @@ class FormField extends Component {
             Color={Color}
             value={value}
             onChange={this.props.onChange}
+            autoComplete={hasSuggestions ? "off" : "on"}
+            list={hasSuggestions ? `suggestionFor_${fieldId}` : undefined}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
             innerRef={(node) => {
@@ -45,6 +49,18 @@ class FormField extends Component {
             {...rest}
           />
           <Label.Text Color={Color}>{label} </Label.Text>
+          {hasSuggestions && (
+            <datalist id={`suggestionFor_${fieldId}`}>
+              {this.props.suggestions.map((suggestion) => (
+                <option
+                  key={`suggestionFor_${fieldId}_option${suggestion}`}
+                  value={suggestion}
+                >
+                  {suggestion}
+                </option>
+              ))}
+            </datalist>
+          )}
         </Label>
       </FormFieldWrapper>
     );

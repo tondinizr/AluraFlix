@@ -40,6 +40,24 @@
         "text": "Formação de Jogos na Alura",
         "url": "https://www.alura.com.br/cursos-online-front-end"
       }
+    },
+    {
+      "titulo": "Rocketseat",
+      "cor": "#6969da",
+      "link_extra": {
+        "text": "Videos do Canal da RocketSeat",
+        "url": "https://rocketseat.com.br/"
+      },
+      "id": 6
+    },
+    {
+      "titulo": "Testando",
+      "cor": "#9bd968",
+      "link_extra": {
+        "text": "Teste",
+        "url": ""
+      },
+      "id": 7
     }
   ],
   "videos": [
@@ -186,6 +204,36 @@
       "categoriaId": 5,
       "titulo": "Resident Evil 8",
       "url": "https://www.youtube.com/watch?v=JSapXD9vxYA"
+    },
+    {
+      "titulo": "Twitter Responsivo com ReactJS | UI Clone",
+      "url": "https://www.youtube.com/watch?v=K-8z_4xvT3o",
+      "categoriaId": 6,
+      "id": 25
+    },
+    {
+      "titulo": "Menu do Stripe com ReactJS | UI Clone",
+      "url": "https://www.youtube.com/watch?v=B7V0q0ZSz2o",
+      "categoriaId": 6,
+      "id": 26
+    },
+    {
+      "titulo": "Recriando a Interface do Discord com ReactJS | UI Clone",
+      "url": "https://www.youtube.com/watch?v=x4FdZd2-_uU",
+      "categoriaId": 6,
+      "id": 27
+    },
+    {
+      "titulo": "Clonando interface do Nubank (+ ANIMAÇÕES) com React Native | Diego Fernandes",
+      "url": "https://www.youtube.com/watch?v=DDm0M_rZLJo",
+      "categoriaId": 6,
+      "id": 28
+    },
+    {
+      "titulo": "Clonando interface do Uber com React Native | Diego Fernandes",
+      "url": "https://www.youtube.com/watch?v=bg-U0xZwcRk",
+      "categoriaId": 6,
+      "id": 29
     }
   ]
 }

@@ -4,102 +4,149 @@ import PageDefault from "../../../components/PageDefault";
 import FormField from "../../../components/FormField";
 import Carregando from "../../../components/Loading";
 import { DefaultButton } from "../../../components/Button";
+import { useForm } from "../../../hooks/useForm";
+import categoriasRepository from "../../../repositories/categorias";
+import api from "../../../services/api";
+import { ToastContainer } from "react-toastify";
+import { Error, Sucess } from "../../../components/Toastify";
 
 function CadastroCategoria() {
-  const [listaCategorias, setListaCategorias] = useState([]);
-  const ValoresIniciais = {
+  const valoresIniciais = {
     titulo: "",
-    descricao: "",
     cor: "#6969da",
-    id: "",
+    link_text: "",
+    link_url: "",
   };
-  const [categoria, setCategoria] = useState(ValoresIniciais);
 
-  function handleChange(e) {
-    let name = e.target.getAttribute("name");
-    const { value } = e.target;
-    setCategoria({
-      ...categoria,
-      [name]: value,
-    });
+  const { values, handleChange, clearForm } = useForm(valoresIniciais);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    let count = 0;
+
+    const { titulo, cor, link_text, link_url } = values;
+    if (titulo === "") {
+      Error("⚠️ Digite um Título para a categoria!");
+      count++;
+    }
+    if (cor === "") {
+      Error("⚠️ Digite uma Cor para a categoria!");
+      count++;
+    }
+
+    if (count > 0) return;
+
+    const data = {
+      titulo,
+      cor,
+      link_extra: {
+        text: link_text,
+        url: link_url,
+      },
+    };
+
+    try {
+      const response = await api.post("categorias", data);
+      console.log(response);
+      clearForm();
+      Sucess("✅ Categoria cadastrado com Sucesso!");
+      setCount(count + 1);
+    } catch (err) {
+      Error("⚠️ Ocorreu um erro");
+    }
   }
 
+  const [categorias, setCategorias] = useState([]);
+  const [count, setCount] = useState(1);
+
   useEffect(() => {
-    const URL = window.location.hostname.includes("http://localhost/")
-      ? "http://localhost:8080/categorias"
-      : "https://backend-tonflix.herokuapp.com/categorias";
-    fetch(URL).then(async (respostaDoServer) => {
-      if (respostaDoServer.ok) {
-        const resposta = await respostaDoServer.json();
-        console.log(resposta);
-        setListaCategorias(resposta);
-        return;
-      }
-      throw new Error("Não foi possível pegar os dados");
+    categoriasRepository.getAll().then((categoriasFromServer) => {
+      setCategorias(categoriasFromServer);
     });
-  }, []);
+  }, [count]);
 
   return (
     <PageDefault>
-      <h1 style={{ color: categoria.cor }}>Cadastro de Categoria</h1>
+      <h1 style={{ color: values.cor }}>Cadastro de Categoria</h1>
       <form>
         <FormField
-          Color={categoria.cor}
+          Color={values.cor}
           label="Título da Categoria:"
           type="text"
           name="titulo"
-          text
-          value={categoria.titulo}
+          value={values.titulo}
           onChange={(e) => {
             handleChange(e);
           }}
         />
         <FormField
-          Color={categoria.cor}
+          Color={values.cor}
           textArea
-          label="Descrição:"
+          label="Descrição (Opcional):"
           type="text"
-          name="descricao"
-          value={categoria.descricao}
+          name="link_text"
+          value={values.link_text}
+          onChange={(e) => {
+            handleChange(e);
+          }}
+        />
+
+        <FormField
+          Color={values.cor}
+          label="Link para o conteúdo (Opcional):"
+          type="text"
+          name="link_url"
+          value={values.link_url}
           onChange={(e) => {
             handleChange(e);
           }}
         />
         <FormField
-          Color={categoria.cor}
+          Color={values.cor}
           Padding="4px 16px"
           Height="48px"
           label="cor:"
           type="color"
           name="cor"
-          value={categoria.cor}
+          value={values.cor}
           onChange={(e) => {
             handleChange(e);
           }}
         />
 
         <DefaultButton
-          Color={categoria.cor}
+          Color={values.cor}
           type="submit"
           onClick={(e) => {
-            e.preventDefault();
-            if (categoria.titulo === "") {
-              return;
-            } else {
-              if (listaCategorias[0] === "") {
-                setListaCategorias([categoria]);
-              } else {
-                setListaCategorias([...listaCategorias, categoria]);
-              }
-              setCategoria(ValoresIniciais);
-            }
+            handleSubmit(e);
           }}
         >
           Cadastrar
         </DefaultButton>
-      </form>
 
-      {listaCategorias.length > 0 ? (
+        <DefaultButton
+          Color={values.cor}
+          type="submit"
+          style={{ marginLeft: "15px" }}
+        >
+          <Link to="/cadastro/video" style={{ textDecoration: "none" }}>
+            Cadastrar Vídeo
+          </Link>
+        </DefaultButton>
+      </form>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
+      {categorias.length > 0 ? (
         <table>
           <tbody>
             <tr>
@@ -107,7 +154,7 @@ function CadastroCategoria() {
               <td>Descrição</td>
               <td>Cor</td>
             </tr>
-            {listaCategorias.map((novaCategoria, indice) => {
+            {categorias.map((novaCategoria, indice) => {
               return (
                 <tr key={novaCategoria.id}>
                   <td>{novaCategoria.titulo}</td>
@@ -127,10 +174,8 @@ function CadastroCategoria() {
           </tbody>
         </table>
       ) : (
-        <Carregando Cor={categoria.cor} />
+        <Carregando Cor={values.cor} />
       )}
-
-      <Link to="/">Ir para home</Link>
     </PageDefault>
   );
 }
