@@ -7,7 +7,7 @@ import FormField from "../../../components/FormField";
 import { DefaultButton } from "../../../components/Button";
 import categoriasRepository from "../../../repositories/categorias";
 import { ToastContainer } from "react-toastify";
-import { Error, Sucess } from "../../../components/Toastify";
+import { Error, Sucess, Warning } from "../../../components/Toastify";
 
 function CadastroVideo() {
   const history = useHistory();
@@ -42,6 +42,10 @@ function CadastroVideo() {
     }
     if (categoria === "") {
       Error("⚠️ Escolha uma categoria para o vídeo!");
+      count++;
+    }
+    if (titlesCategory.find((cat) => cat != categoria)) {
+      Warning("⚠️ Escolha uma categoria dentre as cadastradas");
       count++;
     }
     if (count > 0) return;
